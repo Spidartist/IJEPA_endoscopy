@@ -18,6 +18,9 @@ from src.utils.tensors import (
 )
 from src.masks.utils import apply_masks
 
+### Flash Attention Function
+from flash_attn import flash_attn_func
+
 
 def get_2d_sincos_pos_embed(embed_dim, grid_size, cls_token=False):
     """
@@ -123,28 +126,43 @@ class MLP(nn.Module):
         return x
 
 
-class Attention(nn.Module):
-    def __init__(self, dim, num_heads=8, qkv_bias=False, qk_scale=None, attn_drop=0., proj_drop=0.):
+class Attention(nn.Module):   # B x num_tokens x dims
+    def __init__(self, dim, num_heads=8, qkv_bias=False, qk_scale=None, attn_drop=0., proj_drop=0., **kwargs):
         super().__init__()
         self.num_heads = num_heads
         head_dim = dim // num_heads
         self.scale = qk_scale or head_dim ** -0.5
+        # -- Flash Attention
+        self.use_flash_attn = kwargs.get('use_flash_attn', False)
 
         self.qkv = nn.Linear(dim, dim * 3, bias=qkv_bias)
-        self.attn_drop = nn.Dropout(attn_drop)
+        # self.attn_drop = nn.Dropout(attn_drop)
+        if self.use_flash_attn:
+            self.attn_drop = attn_drop
+        else:
+            self.attn_drop = nn.Dropout(attn_drop)
         self.proj = nn.Linear(dim, dim)
         self.proj_drop = nn.Dropout(proj_drop)
 
     def forward(self, x):
         B, N, C = x.shape
         qkv = self.qkv(x).reshape(B, N, 3, self.num_heads, C // self.num_heads).permute(2, 0, 3, 1, 4)
+        
         q, k, v = qkv[0], qkv[1], qkv[2]
 
-        attn = (q @ k.transpose(-2, -1)) * self.scale
-        attn = attn.softmax(dim=-1)
-        attn = self.attn_drop(attn)
+        if self.use_flash_attn:
+            q = q.permute(0, 2, 1, 3).to(torch.bfloat16)
+            k = k.permute(0, 2, 1, 3).to(torch.bfloat16)
+            v = v.permute(0, 2, 1, 3).to(torch.bfloat16)
 
-        x = (attn @ v).transpose(1, 2).reshape(B, N, C)
+            x = flash_attn_func(q, k, v, self.attn_drop, softmax_scale=None, causal=False).reshape(B, N, C).to(torch.float32)
+            attn = None
+        else:
+            attn = (q @ k.transpose(-2, -1)) * self.scale
+            attn = attn.softmax(dim=-1)
+            attn = self.attn_drop(attn)
+
+            x = (attn @ v).transpose(1, 2).reshape(B, N, C)
         x = self.proj(x)
         x = self.proj_drop(x)
         return x, attn
@@ -152,11 +170,11 @@ class Attention(nn.Module):
 
 class Block(nn.Module):
     def __init__(self, dim, num_heads, mlp_ratio=4., qkv_bias=False, qk_scale=None, drop=0., attn_drop=0.,
-                 drop_path=0., act_layer=nn.GELU, norm_layer=nn.LayerNorm):
+                 drop_path=0., act_layer=nn.GELU, norm_layer=nn.LayerNorm, use_flash_attn=True):
         super().__init__()
         self.norm1 = norm_layer(dim)
         self.attn = Attention(
-            dim, num_heads=num_heads, qkv_bias=qkv_bias, qk_scale=qk_scale, attn_drop=attn_drop, proj_drop=drop)
+            dim, num_heads=num_heads, qkv_bias=qkv_bias, qk_scale=qk_scale, attn_drop=attn_drop, proj_drop=drop, use_flash_attn=use_flash_attn)
         self.drop_path = DropPath(drop_path) if drop_path > 0. else nn.Identity()
         self.norm2 = norm_layer(dim)
         mlp_hidden_dim = int(dim * mlp_ratio)
@@ -186,6 +204,9 @@ class PatchEmbed(nn.Module):
     def forward(self, x):
         B, C, H, W = x.shape
         x = self.proj(x).flatten(2).transpose(1, 2)
+        # B x embed_dim x H/p_size x W/p_size
+        # B x embed_dim x (HxW/p_size/p_size)
+        # B x (HxW/p_size/p_size) x embed_dim
         return x
 
 
@@ -251,7 +272,7 @@ class VisionTransformerPredictor(nn.Module):
         self.predictor_blocks = nn.ModuleList([
             Block(
                 dim=predictor_embed_dim, num_heads=num_heads, mlp_ratio=mlp_ratio, qkv_bias=qkv_bias, qk_scale=qk_scale,
-                drop=drop_rate, attn_drop=attn_drop_rate, drop_path=dpr[i], norm_layer=norm_layer)
+                drop=drop_rate, attn_drop=attn_drop_rate, drop_path=dpr[i], norm_layer=norm_layer, use_flash_attn=kwargs.get('use_flash_attn', False))
             for i in range(depth)])
         self.predictor_norm = norm_layer(predictor_embed_dim)
         self.predictor_proj = nn.Linear(predictor_embed_dim, embed_dim, bias=True)
@@ -283,6 +304,7 @@ class VisionTransformerPredictor(nn.Module):
                 nn.init.constant_(m.bias, 0)
 
     def forward(self, x, masks_x, masks):
+                        # mask_enc, mask_pred
         assert (masks is not None) and (masks_x is not None), 'Cannot run predictor without mask indices'
 
         if not isinstance(masks_x, list):
@@ -294,7 +316,7 @@ class VisionTransformerPredictor(nn.Module):
         # -- Batch Size
         B = len(x) // len(masks_x)
 
-        # -- map from encoder-dim to pedictor-dim
+        # -- map from encoder-dim to predictor-dim
         x = self.predictor_embed(x)
 
         # -- add positional embedding to x tokens
@@ -353,11 +375,11 @@ class VisionTransformer(nn.Module):
         self.num_heads = num_heads
         # --
         self.patch_embed = PatchEmbed(
-            img_size=img_size[0],
-            patch_size=patch_size,
-            in_chans=in_chans,
-            embed_dim=embed_dim)
-        num_patches = self.patch_embed.num_patches
+            img_size=img_size[0],  #224
+            patch_size=patch_size, #14
+            in_chans=in_chans,   #3
+            embed_dim=embed_dim)  #768
+        num_patches = self.patch_embed.num_patches  # 256
         # --
         self.pos_embed = nn.Parameter(torch.zeros(1, num_patches, embed_dim), requires_grad=False)
         pos_embed = get_2d_sincos_pos_embed(self.pos_embed.shape[-1],
@@ -369,7 +391,7 @@ class VisionTransformer(nn.Module):
         self.blocks = nn.ModuleList([
             Block(
                 dim=embed_dim, num_heads=num_heads, mlp_ratio=mlp_ratio, qkv_bias=qkv_bias, qk_scale=qk_scale,
-                drop=drop_rate, attn_drop=attn_drop_rate, drop_path=dpr[i], norm_layer=norm_layer)
+                drop=drop_rate, attn_drop=attn_drop_rate, drop_path=dpr[i], norm_layer=norm_layer, use_flash_attn=kwargs.get('use_flash_attn', False))
             for i in range(depth)])
         self.norm = norm_layer(embed_dim)
         # ------
@@ -405,7 +427,7 @@ class VisionTransformer(nn.Module):
 
         # -- patchify x
         x = self.patch_embed(x)
-        B, N, D = x.shape
+        B, N, D = x.shape # B x 256 x 768
 
         # -- add positional embedding to x
         pos_embed = self.interpolate_pos_encoding(x, self.pos_embed)
