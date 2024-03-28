@@ -1,0 +1,66 @@
+INFO:root:VisionTransformer(
+  (patch_embed): PatchEmbed(
+    (proj): Conv2d(3, 768, kernel_size=(16, 16), stride=(16, 16))
+  )
+  (blocks): ModuleList(
+    (0-11): 12 x Block(
+      (norm1): LayerNorm((768,), eps=1e-06, elementwise_affine=True)
+      (attn): Attention(
+        (qkv): Linear(in_features=768, out_features=2304, bias=True)
+        (proj): Linear(in_features=768, out_features=768, bias=True)
+        (proj_drop): Dropout(p=0.0, inplace=False)
+      )
+      (drop_path): Identity()
+      (norm2): LayerNorm((768,), eps=1e-06, elementwise_affine=True)
+      (mlp): MLP(
+        (fc1): Linear(in_features=768, out_features=3072, bias=True)
+        (act): GELU(approximate='none')
+        (fc2): Linear(in_features=3072, out_features=768, bias=True)
+        (drop): Dropout(p=0.0, inplace=False)
+      )
+    )
+  )
+  (norm): LayerNorm((768,), eps=1e-06, elementwise_affine=True)
+)
+INFO:root:making polyp data transforms
+INFO:root:Polyp dataset created
+INFO:root:Polyp unsupervised data loader created
+INFO:root:Using AdamW
+INFO:root:Epoch 1
+INFO:root:Set up meters for epoch 1
+Process Process-1:
+Traceback (most recent call last):
+  File "/home/kc/.conda/envs/quanhd_ijepa/lib/python3.10/multiprocessing/process.py", line 314, in _bootstrap
+    self.run()
+  File "/home/kc/.conda/envs/quanhd_ijepa/lib/python3.10/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/mnt/quanhd/ijepa/main_polyp.py", line 52, in process_main
+    app_main(args=params)
+  File "/mnt/quanhd/ijepa/src/train_polyp.py", line 300, in main
+    for itr, (udata, masks_enc, masks_pred) in tqdm(enumerate(unsupervised_loader)):
+  File "/home/kc/.local/lib/python3.10/site-packages/torch/utils/data/dataloader.py", line 438, in __iter__
+    return self._get_iterator()
+  File "/home/kc/.local/lib/python3.10/site-packages/torch/utils/data/dataloader.py", line 386, in _get_iterator
+    return _MultiProcessingDataLoaderIter(self)
+  File "/home/kc/.local/lib/python3.10/site-packages/torch/utils/data/dataloader.py", line 1039, in __init__
+    w.start()
+  File "/home/kc/.conda/envs/quanhd_ijepa/lib/python3.10/multiprocessing/process.py", line 121, in start
+    self._popen = self._Popen(self)
+  File "/home/kc/.conda/envs/quanhd_ijepa/lib/python3.10/multiprocessing/context.py", line 224, in _Popen
+    return _default_context.get_context().Process._Popen(process_obj)
+  File "/home/kc/.conda/envs/quanhd_ijepa/lib/python3.10/multiprocessing/context.py", line 288, in _Popen
+    return Popen(process_obj)
+  File "/home/kc/.conda/envs/quanhd_ijepa/lib/python3.10/multiprocessing/popen_spawn_posix.py", line 32, in __init__
+    super().__init__(process_obj)
+  File "/home/kc/.conda/envs/quanhd_ijepa/lib/python3.10/multiprocessing/popen_fork.py", line 19, in __init__
+    self._launch(process_obj)
+  File "/home/kc/.conda/envs/quanhd_ijepa/lib/python3.10/multiprocessing/popen_spawn_posix.py", line 62, in _launch
+    f.write(fp.getbuffer())
+KeyboardInterrupt
+Exception ignored in: <function _MultiProcessingDataLoaderIter.__del__ at 0x7f268a539fc0>
+Traceback (most recent call last):
+  File "/home/kc/.local/lib/python3.10/site-packages/torch/utils/data/dataloader.py", line 1478, in __del__
+    self._shutdown_workers()
+  File "/home/kc/.local/lib/python3.10/site-packages/torch/utils/data/dataloader.py", line 1436, in _shutdown_workers
+    if self._persistent_workers or self._workers_status[worker_id]:
+AttributeError: '_MultiProcessingDataLoaderIter' object has no attribute '_workers_status'

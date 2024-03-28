@@ -1,0 +1,223 @@
+INFO:root:VisionTransformer(
+  (patch_embed): PatchEmbed(
+    (proj): Conv2d(3, 768, kernel_size=(16, 16), stride=(16, 16))
+  )
+  (blocks): ModuleList(
+    (0-11): 12 x Block(
+      (norm1): LayerNorm((768,), eps=1e-06, elementwise_affine=True)
+      (attn): Attention(
+        (qkv): Linear(in_features=768, out_features=2304, bias=True)
+        (attn_drop): Dropout(p=0.0, inplace=False)
+        (proj): Linear(in_features=768, out_features=768, bias=True)
+        (proj_drop): Dropout(p=0.0, inplace=False)
+      )
+      (drop_path): Identity()
+      (norm2): LayerNorm((768,), eps=1e-06, elementwise_affine=True)
+      (mlp): MLP(
+        (fc1): Linear(in_features=768, out_features=3072, bias=True)
+        (act): GELU(approximate='none')
+        (fc2): Linear(in_features=3072, out_features=768, bias=True)
+        (drop): Dropout(p=0.0, inplace=False)
+      )
+    )
+  )
+  (norm): LayerNorm((768,), eps=1e-06, elementwise_affine=True)
+)
+INFO:root:making polyp data transforms
+INFO:root:Polyp dataset created
+INFO:root:Polyp unsupervised data loader created
+INFO:root:Using AdamW
+INFO:root:Epoch 1
+INFO:root:Set up meters for epoch 1
+0it [00:00, ?it/s]
+INFO:root:Iteration 1
+INFO:root:[1,     0] loss: 0.486 masks: 88.0 35.0 [wd: 3.00e-02] [lr: 4.00e-04] [mem: 1.19e+04] (2424.2 ms)
+INFO:root:[1,     0] grad_stats: [4.92e-02 2.16e-02] (2.12e-02, 5.37e-02)
+
+2it [00:05,  2.37s/it]
+INFO:root:[1,     1] loss: 0.426 masks: 77.0 41.5 [wd: 3.00e-02] [lr: 4.00e-04] [mem: 1.19e+04] (1684.2 ms)
+INFO:root:[1,     1] grad_stats: [2.26e-03 2.05e-03] (1.89e-03, 2.89e-03)
+INFO:root:Iteration 3
+INFO:root:[1,     2] loss: 0.390 masks: 74.3 41.7 [wd: 3.00e-02] [lr: 4.00e-04] [mem: 1.19e+04] (1437.4 ms)
+INFO:root:[1,     2] grad_stats: [1.36e-03 6.41e-04] (6.41e-04, 1.91e-03)
+
+4it [00:07,  1.43s/it]
+INFO:root:[1,     3] loss: 0.363 masks: 71.0 41.8 [wd: 3.00e-02] [lr: 4.00e-04] [mem: 1.19e+04] (1319.0 ms)
+INFO:root:[1,     3] grad_stats: [6.70e-04 2.54e-04] (2.52e-04, 8.87e-04)
+INFO:root:Iteration 5
+INFO:root:[1,     4] loss: 0.343 masks: 72.8 41.8 [wd: 3.00e-02] [lr: 4.00e-04] [mem: 1.24e+04] (1246.9 ms)
+INFO:root:[1,     4] grad_stats: [8.22e-04 2.53e-04] (2.47e-04, 1.06e-03)
+INFO:root:Iteration 6
+INFO:root:[1,     5] loss: 0.326 masks: 70.0 42.8 [wd: 3.00e-02] [lr: 4.00e-04] [mem: 1.24e+04] (1189.4 ms)
+INFO:root:[1,     5] grad_stats: [5.35e-04 1.52e-04] (1.49e-04, 7.25e-04)
+
+6it [00:09,  1.14s/it]
+INFO:root:[1,     6] loss: 0.312 masks: 69.1 42.7 [wd: 3.00e-02] [lr: 4.00e-04] [mem: 1.24e+04] (1149.8 ms)
+INFO:root:[1,     6] grad_stats: [7.84e-04 1.81e-04] (1.81e-04, 9.24e-04)
+INFO:root:Iteration 8
+INFO:root:[1,     7] loss: 0.300 masks: 69.9 42.6 [wd: 3.00e-02] [lr: 4.00e-04] [mem: 1.24e+04] (1124.9 ms)
+INFO:root:[1,     7] grad_stats: [1.20e-03 1.58e-04] (1.58e-04, 1.20e-03)
+
+9it [00:12,  1.02s/it]
+INFO:root:[1,     8] loss: 0.289 masks: 71.6 42.6 [wd: 3.00e-02] [lr: 4.00e-04] [mem: 1.30e+04] (1107.6 ms)
+INFO:root:[1,     8] grad_stats: [1.28e-03 1.72e-04] (1.72e-04, 1.28e-03)
+INFO:root:Iteration 10
+INFO:root:[1,     9] loss: 0.280 masks: 71.5 43.1 [wd: 3.00e-02] [lr: 4.00e-04] [mem: 1.30e+04] (1091.6 ms)
+INFO:root:[1,     9] grad_stats: [5.31e-04 1.26e-04] (1.26e-04, 7.17e-04)
+
+11it [00:13,  1.01it/s]
+INFO:root:[1,    10] loss: 0.271 masks: 72.4 43.0 [wd: 3.00e-02] [lr: 4.00e-04] [mem: 1.30e+04] (1079.3 ms)
+INFO:root:[1,    10] grad_stats: [4.34e-03 2.45e-04] (2.32e-04, 4.34e-03)
+INFO:root:Iteration 12
+INFO:root:[1,    11] loss: 0.263 masks: 72.8 42.9 [wd: 3.00e-02] [lr: 4.00e-04] [mem: 1.30e+04] (1068.9 ms)
+INFO:root:[1,    11] grad_stats: [5.50e-03 7.57e-04] (7.57e-04, 5.50e-03)
+
+13it [00:15,  1.03it/s]
+INFO:root:[1,    12] loss: 0.255 masks: 72.8 42.8 [wd: 3.00e-02] [lr: 4.00e-04] [mem: 1.30e+04] (1059.8 ms)
+INFO:root:[1,    12] grad_stats: [6.32e-03 4.44e-04] (4.41e-04, 6.32e-03)
+INFO:root:Iteration 14
+INFO:root:[1,    13] loss: 0.247 masks: 73.1 42.8 [wd: 3.00e-02] [lr: 4.01e-04] [mem: 1.30e+04] (1052.3 ms)
+INFO:root:[1,    13] grad_stats: [2.16e-03 3.19e-04] (2.95e-04, 2.16e-03)
+
+15it [00:17,  1.03it/s]
+INFO:root:[1,    14] loss: 0.240 masks: 73.8 42.7 [wd: 3.00e-02] [lr: 4.01e-04] [mem: 1.30e+04] (1047.3 ms)
+INFO:root:[1,    14] grad_stats: [1.74e-03 2.87e-04] (2.69e-04, 1.85e-03)
+INFO:root:Iteration 16
+INFO:root:[1,    15] loss: 0.233 masks: 74.0 42.7 [wd: 3.00e-02] [lr: 4.01e-04] [mem: 1.30e+04] (1041.9 ms)
+INFO:root:[1,    15] grad_stats: [6.71e-03 7.17e-04] (6.41e-04, 6.71e-03)
+
+17it [00:19,  1.04it/s]
+INFO:root:[1,    16] loss: 0.226 masks: 73.6 42.6 [wd: 3.00e-02] [lr: 4.01e-04] [mem: 1.30e+04] (1035.9 ms)
+INFO:root:[1,    16] grad_stats: [1.14e-03 1.71e-04] (1.71e-04, 1.28e-03)
+INFO:root:Iteration 18
+INFO:root:[1,    17] loss: 0.220 masks: 73.8 42.6 [wd: 3.00e-02] [lr: 4.01e-04] [mem: 1.30e+04] (1033.6 ms)
+INFO:root:[1,    17] grad_stats: [9.09e-03 9.93e-04] (8.97e-04, 9.20e-03)
+
+18it [00:20,  1.02it/s]
+INFO:root:[1,    18] loss: 0.214 masks: 73.5 42.6 [wd: 3.00e-02] [lr: 4.01e-04] [mem: 1.30e+04] (1028.4 ms)
+INFO:root:[1,    18] grad_stats: [1.96e-03 4.38e-04] (4.38e-04, 2.03e-03)
+INFO:root:Iteration 20
+INFO:root:[1,    19] loss: 0.208 masks: 72.4 43.1 [wd: 3.00e-02] [lr: 4.01e-04] [mem: 1.30e+04] (1022.7 ms)
+INFO:root:[1,    19] grad_stats: [5.55e-03 7.73e-04] (7.04e-04, 5.87e-03)
+
+20it [00:22,  1.05it/s]
+INFO:root:[1,    20] loss: 0.203 masks: 72.9 43.1 [wd: 3.00e-02] [lr: 4.01e-04] [mem: 1.30e+04] (1020.1 ms)
+INFO:root:[1,    20] grad_stats: [1.91e-03 5.98e-04] (5.95e-04, 2.34e-03)
+INFO:root:Iteration 22
+INFO:root:[1,    21] loss: 0.198 masks: 73.2 43.0 [wd: 3.00e-02] [lr: 4.01e-04] [mem: 1.30e+04] (1017.7 ms)
+INFO:root:[1,    21] grad_stats: [4.73e-03 4.96e-04] (4.69e-04, 4.73e-03)
+
+23it [00:25,  1.04it/s]
+INFO:root:[1,    22] loss: 0.193 masks: 72.7 43.0 [wd: 3.00e-02] [lr: 4.01e-04] [mem: 1.30e+04] (1014.0 ms)
+INFO:root:[1,    22] grad_stats: [7.43e-03 6.28e-04] (6.28e-04, 8.12e-03)
+INFO:root:Iteration 24
+INFO:root:[1,    23] loss: 0.189 masks: 72.2 43.0 [wd: 3.00e-02] [lr: 4.01e-04] [mem: 1.30e+04] (1012.0 ms)
+INFO:root:[1,    23] grad_stats: [1.06e-02 1.57e-03] (1.48e-03, 1.06e-02)
+
+25it [00:27,  1.03it/s]
+INFO:root:[1,    24] loss: 0.185 masks: 72.4 43.2 [wd: 3.00e-02] [lr: 4.01e-04] [mem: 1.30e+04] (1011.2 ms)
+INFO:root:[1,    24] grad_stats: [9.61e-03 1.07e-03] (1.02e-03, 9.61e-03)
+INFO:root:Iteration 26
+INFO:root:[1,    25] loss: 0.181 masks: 72.3 43.3 [wd: 3.00e-02] [lr: 4.01e-04] [mem: 1.30e+04] (1009.3 ms)
+INFO:root:[1,    25] grad_stats: [3.64e-03 3.36e-04] (3.36e-04, 3.83e-03)
+
+27it [00:29,  1.03it/s]
+INFO:root:[1,    26] loss: 0.178 masks: 72.3 43.5 [wd: 3.00e-02] [lr: 4.01e-04] [mem: 1.30e+04] (1007.6 ms)
+INFO:root:[1,    26] grad_stats: [6.29e-03 7.00e-04] (6.28e-04, 6.29e-03)
+INFO:root:Iteration 28
+INFO:root:[1,    27] loss: 0.175 masks: 72.0 43.9 [wd: 3.00e-02] [lr: 4.01e-04] [mem: 1.30e+04] (1005.7 ms)
+INFO:root:[1,    27] grad_stats: [5.91e-03 6.37e-04] (5.48e-04, 6.71e-03)
+INFO:root:Iteration 29
+INFO:root:[1,    28] loss: 0.172 masks: 71.9 43.8 [wd: 3.00e-02] [lr: 4.01e-04] [mem: 1.30e+04] (1003.0 ms)
+INFO:root:[1,    28] grad_stats: [1.78e-03 2.88e-04] (2.88e-04, 2.18e-03)
+
+29it [00:31,  1.04it/s]
+INFO:root:[1,    29] loss: 0.169 masks: 71.9 43.8 [wd: 3.00e-02] [lr: 4.01e-04] [mem: 1.30e+04] (1001.4 ms)
+INFO:root:[1,    29] grad_stats: [4.55e-03 5.15e-04] (5.15e-04, 6.18e-03)
+INFO:root:Iteration 31
+INFO:root:[1,    30] loss: 0.166 masks: 71.7 43.9 [wd: 3.00e-02] [lr: 4.01e-04] [mem: 1.30e+04] (999.3 ms)
+INFO:root:[1,    30] grad_stats: [5.50e-03 4.80e-04] (3.72e-04, 5.52e-03)
+
+31it [00:33,  1.05it/s]
+INFO:root:[1,    31] loss: 0.164 masks: 71.6 43.8 [wd: 3.00e-02] [lr: 4.01e-04] [mem: 1.30e+04] (997.3 ms)
+INFO:root:[1,    31] grad_stats: [9.84e-03 6.27e-04] (4.56e-04, 1.01e-02)
+INFO:root:Iteration 33
+INFO:root:[1,    32] loss: 0.162 masks: 71.5 44.0 [wd: 3.00e-02] [lr: 4.01e-04] [mem: 1.30e+04] (995.8 ms)
+INFO:root:[1,    32] grad_stats: [2.46e-03 9.71e-05] (8.44e-05, 3.04e-03)
+
+33it [00:35,  1.05it/s]
+INFO:root:[1,    33] loss: 0.159 masks: 71.6 43.9 [wd: 3.00e-02] [lr: 4.01e-04] [mem: 1.30e+04] (994.6 ms)
+INFO:root:[1,    33] grad_stats: [5.35e-03 2.33e-04] (2.25e-04, 5.35e-03)
+INFO:root:Iteration 35
+INFO:root:[1,    34] loss: 0.158 masks: 71.3 44.0 [wd: 3.00e-02] [lr: 4.01e-04] [mem: 1.30e+04] (993.1 ms)
+INFO:root:[1,    34] grad_stats: [8.67e-03 2.61e-04] (2.61e-04, 8.67e-03)
+
+35it [00:36,  1.05it/s]
+INFO:root:[1,    35] loss: 0.156 masks: 71.5 44.0 [wd: 3.00e-02] [lr: 4.01e-04] [mem: 1.30e+04] (992.6 ms)
+INFO:root:[1,    35] grad_stats: [1.35e-02 4.42e-04] (3.69e-04, 1.35e-02)
+INFO:root:Iteration 37
+INFO:root:[1,    36] loss: 0.154 masks: 71.3 43.9 [wd: 3.00e-02] [lr: 4.01e-04] [mem: 1.30e+04] (991.8 ms)
+INFO:root:[1,    36] grad_stats: [1.09e-02 1.64e-04] (1.61e-04, 1.31e-02)
+
+37it [00:38,  1.03it/s]
+INFO:root:[1,    37] loss: 0.152 masks: 71.3 44.0 [wd: 3.00e-02] [lr: 4.01e-04] [mem: 1.30e+04] (992.6 ms)
+INFO:root:[1,    37] grad_stats: [7.71e-03 1.44e-04] (1.44e-04, 7.71e-03)
+INFO:root:Iteration 39
+
+39it [00:41,  1.10s/it]
+INFO:root:[1,    38] grad_stats: [8.35e-03 1.18e-04] (1.17e-04, 8.35e-03)
+INFO:root:Iteration 40
+INFO:root:[1,    39] loss: 0.149 masks: 71.7 43.8 [wd: 3.00e-02] [lr: 4.02e-04] [mem: 1.32e+04] (1002.3 ms)
+INFO:root:[1,    39] grad_stats: [5.45e-03 8.78e-05] (7.70e-05, 5.55e-03)
+
+41it [00:43,  1.06s/it]
+INFO:root:[1,    40] loss: 0.148 masks: 72.0 43.7 [wd: 3.00e-02] [lr: 4.02e-04] [mem: 1.32e+04] (1002.1 ms)
+INFO:root:[1,    40] grad_stats: [8.27e-03 7.38e-05] (7.38e-05, 8.27e-03)
+INFO:root:Iteration 42
+INFO:root:[1,    41] loss: 0.147 masks: 71.8 43.7 [wd: 3.00e-02] [lr: 4.02e-04] [mem: 1.32e+04] (1000.4 ms)
+INFO:root:[1,    41] grad_stats: [9.65e-03 2.23e-04] (1.89e-04, 9.89e-03)
+INFO:root:Iteration 43
+INFO:root:[1,    42] loss: 0.146 masks: 71.8 43.8 [wd: 3.00e-02] [lr: 4.02e-04] [mem: 1.32e+04] (999.3 ms)
+INFO:root:[1,    42] grad_stats: [2.52e-02 2.03e-04] (1.74e-04, 2.52e-02)
+
+43it [00:45,  1.00s/it]
+INFO:root:[1,    43] loss: 0.145 masks: 72.0 43.7 [wd: 3.00e-02] [lr: 4.02e-04] [mem: 1.32e+04] (998.6 ms)
+INFO:root:[1,    43] grad_stats: [6.68e-03 7.08e-05] (7.08e-05, 8.83e-03)
+INFO:root:Iteration 45
+INFO:root:[1,    44] loss: 0.144 masks: 72.0 43.8 [wd: 3.00e-02] [lr: 4.02e-04] [mem: 1.32e+04] (997.9 ms)
+INFO:root:[1,    44] grad_stats: [1.09e-02 3.98e-04] (3.50e-04, 1.09e-02)
+
+45it [00:47,  1.01it/s]
+INFO:root:[1,    45] loss: 0.143 masks: 72.1 43.8 [wd: 3.00e-02] [lr: 4.02e-04] [mem: 1.32e+04] (997.2 ms)
+INFO:root:[1,    45] grad_stats: [9.17e-03 4.43e-04] (4.43e-04, 9.17e-03)
+INFO:root:Iteration 47
+INFO:root:[1,    46] loss: 0.143 masks: 72.1 43.9 [wd: 3.00e-02] [lr: 4.02e-04] [mem: 1.32e+04] (996.5 ms)
+INFO:root:[1,    46] grad_stats: [1.29e-02 4.38e-04] (3.93e-04, 1.29e-02)
+
+47it [00:49,  1.02it/s]
+INFO:root:[1,    47] loss: 0.143 masks: 71.9 43.8 [wd: 3.00e-02] [lr: 4.02e-04] [mem: 1.32e+04] (995.3 ms)
+INFO:root:[1,    47] grad_stats: [1.63e-02 8.21e-04] (7.79e-04, 1.63e-02)
+INFO:root:Iteration 49
+INFO:root:[1,    48] loss: 0.143 masks: 71.9 43.8 [wd: 3.00e-02] [lr: 4.02e-04] [mem: 1.32e+04] (994.9 ms)
+INFO:root:[1,    48] grad_stats: [1.78e-02 1.72e-04] (1.72e-04, 1.78e-02)
+
+49it [00:51,  1.06s/it]
+Process Process-1:
+Traceback (most recent call last):
+  File "/mnt/quanhd/env/lib/python3.9/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+  File "/mnt/quanhd/env/lib/python3.9/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/mnt/quanhd/ijepa/main_polyp.py", line 52, in process_main
+    app_main(args=params)
+  File "/mnt/quanhd/ijepa/src/train_polyp.py", line 370, in main
+    (loss, _new_lr, _new_wd, grad_stats, rm), etime = gpu_timer(train_step)
+  File "/mnt/quanhd/ijepa/src/utils/logging.py", line 21, in gpu_timer
+    result = closure()
+  File "/mnt/quanhd/ijepa/src/train_polyp.py", line 345, in train_step
+    h, rm = forward_target()
+  File "/mnt/quanhd/ijepa/src/train_polyp.py", line 321, in forward_target
+    rm = calc_rankme(h)
+  File "/mnt/quanhd/ijepa/src/helper.py", line 40, in calc_rankme
+    _u, s, _vh = torch.linalg.svd(
+KeyboardInterrupt

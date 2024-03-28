@@ -173,6 +173,7 @@ def main(args, resume_preempt=False):
         pred_depth=pred_depth,
         pred_emb_dim=pred_emb_dim,
         model_name=model_name,
+        use_flash_attn=True
     )
     target_encoder = copy.deepcopy(encoder)
 

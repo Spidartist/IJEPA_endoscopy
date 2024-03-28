@@ -2,4 +2,3 @@
 *.swo
 __pycache__
 logs*
-wandb

@@ -129,15 +129,16 @@ def init_model(
     crop_size=224,
     pred_depth=6,
     pred_emb_dim=384,
+    use_flash_attn=False,
 ):
-    encoder = vit.__dict__[model_name](img_size=[crop_size], patch_size=patch_size, use_flash_attn=True)
+    encoder = vit.__dict__[model_name](img_size=[crop_size], patch_size=patch_size, use_flash_attn=use_flash_attn)
     predictor = vit.__dict__["vit_predictor"](
         num_patches=encoder.patch_embed.num_patches,
         embed_dim=encoder.embed_dim,
         predictor_embed_dim=pred_emb_dim,
         depth=pred_depth,
         num_heads=encoder.num_heads,
-        use_flash_attn=True
+        use_flash_attn=use_flash_attn
     )
 
     def init_weights(m):
