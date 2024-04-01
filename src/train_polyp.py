@@ -21,7 +21,7 @@ import copy
 import logging
 import sys
 import yaml
-from tqdm import tqdm
+# from tqdm import tqdm
 
 import numpy as np
 import wandb
@@ -297,7 +297,7 @@ def main(args, resume_preempt=False):
         time_meter = AverageMeter()
         logger.info("Set up meters for epoch %d" % (epoch + 1))
 
-        for itr, (udata, masks_enc, masks_pred) in tqdm(enumerate(unsupervised_loader)):
+        for itr, (udata, masks_enc, masks_pred) in enumerate(unsupervised_loader):
             logger.info("Iteration %d" % (itr + 1))
             def load_imgs():
                 # -- unsupervised imgs

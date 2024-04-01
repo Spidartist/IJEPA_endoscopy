@@ -6,6 +6,7 @@
 #
 
 import argparse
+import sys
 
 import multiprocessing as mp
 
@@ -53,6 +54,7 @@ def process_main(rank, fname, world_size, devices):
 
 
 if __name__ == '__main__':
+    print(sys.executable)
     args = parser.parse_args()
 
     num_gpus = len(args.devices)
